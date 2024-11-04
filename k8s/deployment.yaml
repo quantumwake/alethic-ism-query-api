@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alethic-ism-query-api-deployment
+  namespace: alethic
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: alethic-ism-query-api
+  template:
+    metadata:
+      labels:
+        app: alethic-ism-query-api
+    spec:
+      volumes:
+        - name: alethic-ism-routes-secret-volume
+          secret:
+            secretName: alethic-ism-routes-secret
+            items:
+              - key: .routing.yaml
+                path: .routing.yaml
+        - name: alethic-ism-query-api-secret-config-volume
+          secret:
+            secretName: alethic-ism-query-api-secret
+            items:
+              - key: .firebase-credentials.json
+                path: .firebase-credentials.json
+      containers:
+      - name: alethic-ism-query-api
+        image: <IMAGE>
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: alethic-ism-routes-secret-volume
+            mountPath: /app/repo/.routing.yaml
+            subPath: .routing.yaml
+            readOnly: true
+          - name: alethic-ism-query-api-secret-config-volume
+            mountPath: /app/repo/.firebase-credentials.json
+            subPath: .firebase-credentials.json
+            readOnly: true
+        env:
+          - name: NATS_URL
+            valueFrom:
+              secretKeyRef:
+                name: alethic-ism-query-api-secret
+                key: NATS_URL
+          - name: ROUTING_FILE
+            valueFrom:
+              secretKeyRef:
+                name: alethic-ism-query-api-secret
+                key: ROUTING_FILE
+          - name: DSN
+            valueFrom:
+              secretKeyRef:
+                name: alethic-ism-query-api-secret
+                key: DSN
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: regcred
