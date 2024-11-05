@@ -1,4 +1,4 @@
-basePath: /api/v1
+basePath: /api/v1/query
 definitions:
   dsl.Filter:
     properties:
@@ -70,14 +70,14 @@ definitions:
 host: localhost:8080
 info:
   contact: {}
-  description: This is a sample server.
+  description: 'This is a query api for Alethic ISM using a storage class: database'
   license:
     name: Quantum Wake OU - Copyright 2024
   termsOfService: http://swagger.io/terms/
   title: Alethic ISM - Data Query API
   version: "1.0"
 paths:
-  /query/state/{id}:
+  /state/{id}:
     post:
       consumes:
       - application/json

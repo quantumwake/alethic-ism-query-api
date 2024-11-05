@@ -17,7 +17,7 @@ var (
 
 // @title Alethic ISM - Data Query API
 // @version 1.0
-// @description This is a sample server.
+// @description This is a query api for Alethic ISM using a storage class: database
 // @termsOfService http://swagger.io/terms/
 
 // @contact.name
@@ -28,7 +28,7 @@ var (
 // @license.url
 
 // @host localhost:8080
-// @BasePath /api/v1
+// @BasePath /api/v1/query
 func main() {
 	dataAccess = data.InitializeNewDataAccessFromEnvDSN()
 
@@ -42,21 +42,22 @@ func main() {
 	r.Use(gin.Recovery()) // Recover from panics and log the error
 	r.LoadHTMLGlob("templates/*.html")
 
-	v1 := r.Group("/api/v1")
+	v1 := r.Group("/api/v1/query")
 	{
-		v1.POST("/query/state/:id", handleQueryState)
-	}
+		v1.POST("/state/:id", handleQueryState)
 
-	// examples
-	//v1.POST("/state/:id", hanhandleWorkloadLaunch)
-	//v1.GET("/workload/:id/status", handleWorkloadStatus)
-	//v1.DELETE("/workload/:id/terminate", handleWorkloadTerminate)
+	}
 
 	// Swagger documentation route
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// ReDoc documentation route
 	r.GET("/redoc/*any", RedocHandler())
+
+	// examples
+	//v1.POST("/state/:id", hanhandleWorkloadLaunch)
+	//v1.GET("/workload/:id/status", handleWorkloadStatus)
+	//v1.DELETE("/workload/:id/terminate", handleWorkloadTerminate)
 
 	err := r.Run(":8080")
 	if err != nil {
@@ -68,7 +69,7 @@ func main() {
 func RedocHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "redoc.html", gin.H{
-			"SpecURL": "/swagger/doc.json",
+			"SpecURL": "/api/v1/query/swagger/doc.json",
 		})
 	}
 }
@@ -83,7 +84,7 @@ func RedocHandler() gin.HandlerFunc {
 // @Success 200 {array} dsl.StateQueryResult
 // @Failure 400 {object} model.ErrorResponse
 // @Failure 500 {object} model.ErrorResponse
-// @Router /query/state/{id} [post]
+// @Router /state/{id} [post]
 func handleQueryState(c *gin.Context) {
 	stateID := c.Param("id")
 

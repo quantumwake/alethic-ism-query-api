@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample server.",
+        "description": "This is a query api for Alethic ISM using a storage class: database",
         "title": "Alethic ISM - Data Query API",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {},
@@ -11,9 +11,9 @@
         "version": "1.0"
     },
     "host": "localhost:8080",
-    "basePath": "/api/v1",
+    "basePath": "/api/v1/query",
     "paths": {
-        "/query/state/{id}": {
+        "/state/{id}": {
             "post": {
                 "description": "Query state data with filters",
                 "consumes": [
