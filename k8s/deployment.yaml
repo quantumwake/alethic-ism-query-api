@@ -39,7 +39,7 @@ spec:
     - host: api.ism.quantumwake.io
       http:
         paths:
-          - path: /query/(.*)
+          - path: /api/v1/query/(.*)
             pathType: Prefix
             backend:
               service:
