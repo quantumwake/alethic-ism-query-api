@@ -79,7 +79,7 @@ func RedocHandler() gin.HandlerFunc {
 // @Success 200 {array} dsl.StateQueryResult
 // @Failure 400 {object} model.ErrorResponse
 // @Failure 500 {object} model.ErrorResponse
-// @Router /api/v1/state/{id} [post]
+// @Router /api/v1/query/state/{id} [post]
 func handleQueryState(c *gin.Context) {
 	stateID := c.Param("id")
 	log.Println("querying state data for stateID: ", stateID)
