@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"log"
 	"net/http"
 )
 
@@ -45,7 +46,6 @@ func main() {
 	v1 := r.Group("/api/v1/query")
 	{
 		v1.POST("/state/:id", handleQueryState)
-
 	}
 
 	// Swagger documentation route
@@ -53,11 +53,6 @@ func main() {
 
 	// ReDoc documentation route
 	r.GET("/redoc/*any", RedocHandler())
-
-	// examples
-	//v1.POST("/state/:id", hanhandleWorkloadLaunch)
-	//v1.GET("/workload/:id/status", handleWorkloadStatus)
-	//v1.DELETE("/workload/:id/terminate", handleWorkloadTerminate)
 
 	err := r.Run(":8080")
 	if err != nil {
@@ -84,9 +79,10 @@ func RedocHandler() gin.HandlerFunc {
 // @Success 200 {array} dsl.StateQueryResult
 // @Failure 400 {object} model.ErrorResponse
 // @Failure 500 {object} model.ErrorResponse
-// @Router /state/{id} [post]
+// @Router /api/v1/state/{id} [post]
 func handleQueryState(c *gin.Context) {
 	stateID := c.Param("id")
+	log.Println("querying state data for stateID: ", stateID)
 
 	// Parse JSON body for filter criteria into StateQuery
 	var query dsl.StateQuery
@@ -97,12 +93,15 @@ func handleQueryState(c *gin.Context) {
 		return
 	}
 
+	log.Println("querying state data for stateID: ", stateID, " with query: ", query)
+
 	// Execute the query
 	results, err := dataAccess.Query(query)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal error"})
 		return
 	}
+	log.Println("querying state data for stateID: ", stateID, " with query: ", query, " returned results: ", results)
 
 	// Return the results
 	c.JSON(http.StatusOK, results)
