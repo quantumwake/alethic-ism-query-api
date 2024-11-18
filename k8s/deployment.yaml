@@ -18,7 +18,7 @@ metadata:
   namespace: alethic
   annotations:
     #nginx.ingress.kubernetes.io/rewrite-target: /$1
-    nginx.ingress.kubernetes.io/cors-allow-origin: "https://ism.quantumwake.io, http://localhost:3000"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://ism.quantumwake.io, http://localhost:3000, http://localhost:3001"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     nginx.ingress.kubernetes.io/cors-max-age: "600"
     nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, DELETE"
