@@ -92,11 +92,6 @@ spec:
             subPath: .firebase-credentials.json
             readOnly: true
         env:
-          - name: NATS_URL
-            valueFrom:
-              secretKeyRef:
-                name: alethic-ism-query-api-secret
-                key: NATS_URL
           - name: ROUTING_FILE
             valueFrom:
               secretKeyRef:

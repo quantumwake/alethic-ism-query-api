@@ -1,4 +1,4 @@
-basePath: /api/v1/query
+basePath: /api/v1
 definitions:
   dsl.Filter:
     properties:
@@ -67,7 +67,7 @@ definitions:
       message:
         type: string
     type: object
-host: localhost:8080
+host: localhost:8081
 info:
   contact: {}
   description: 'This is a query api for Alethic ISM using a storage class: database'
@@ -77,7 +77,7 @@ info:
   title: Alethic ISM - Data Query API
   version: "1.0"
 paths:
-  /state/{id}:
+  /state/query/{id}:
     post:
       consumes:
       - application/json

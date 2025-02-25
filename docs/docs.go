@@ -19,7 +19,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/state/{id}": {
+        "/state/query/{id}": {
             "post": {
                 "description": "Query state data with filters",
                 "consumes": [
@@ -181,8 +181,8 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
-	BasePath:         "/api/v1/query",
+	Host:             "localhost:8081",
+	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Alethic ISM - Data Query API",
 	Description:      "This is a query api for Alethic ISM using a storage class: database",
