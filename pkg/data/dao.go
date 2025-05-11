@@ -3,7 +3,7 @@ package data
 import (
 	"alethic-ism-query-api/pkg/utils"
 	"fmt"
-	"github.com/quantumwake/alethic-ism-core-go/pkg/data/query/dsl"
+	"github.com/quantumwake/alethic-ism-core-go/pkg/repository/query/dsl"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -68,14 +68,14 @@ func (da *Access) AutoMigrate() error {
 }
 
 // Query executes a state query and returns the results.
-func (da *Access) Query(query dsl.StateQuery) ([]dsl.StateQueryResult, error) {
+func (da *Access) Query(stateID string, query dsl.StateQuery) ([]dsl.StateQueryResult, error) {
 	// Validate UUID
-	if err := utils.ValidateUUID(query.StateID); err != nil {
+	if err := utils.ValidateUUID(stateID); err != nil {
 		return nil, fmt.Errorf("invalid UUID: %v", err)
 	}
 
 	// Build the final SQL query and arguments
-	dataSQL, dataArgs, err := query.BuildFinalQuery()
+	dataSQL, dataArgs, err := query.BuildFinalQuery(stateID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to build final query: %v", err)
 	}
