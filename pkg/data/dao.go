@@ -1,18 +1,14 @@
 package data
 
 import (
-	"alethic-ism-query-api/pkg/dsl"
 	"alethic-ism-query-api/pkg/utils"
 	"fmt"
+	"github.com/quantumwake/alethic-ism-core-go/pkg/data/query/dsl"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
 	"os"
-)
-
-var (
-	DataAccess *Access
 )
 
 type Access struct {
@@ -71,6 +67,7 @@ func (da *Access) AutoMigrate() error {
 	return err
 }
 
+// Query executes a state query and returns the results.
 func (da *Access) Query(query dsl.StateQuery) ([]dsl.StateQueryResult, error) {
 	// Validate UUID
 	if err := utils.ValidateUUID(query.StateID); err != nil {
@@ -92,6 +89,7 @@ func (da *Access) Query(query dsl.StateQuery) ([]dsl.StateQueryResult, error) {
 	return results, nil
 }
 
+// InitializeNewDataAccessFromEnvDSN initializes a new data access object from the DSN environment variable.
 func InitializeNewDataAccessFromEnvDSN() *Access {
 	dsn, ok := os.LookupEnv("DSN")
 	if !ok {

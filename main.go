@@ -60,9 +60,9 @@ func setupRoutesV1(r *gin.Engine) {
 	{
 		v1State := v1.Group("/state")
 		{
-			v1StateQuery := v1State.Group("/query")
+			v1StateQuery := v1State.Group("/:id")
 			{
-				v1StateQuery.POST("/:id", apiv1.HandleQueryState)
+				v1StateQuery.POST("/query", apiv1.HandleQueryState)
 			}
 		}
 		v1Vault := v1.Group("/vault")

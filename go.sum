@@ -98,6 +98,14 @@ github.com/quantumwake/alethic-ism-core-go v0.0.0-20250225170147-028524a9a401 h1
 github.com/quantumwake/alethic-ism-core-go v0.0.0-20250225170147-028524a9a401/go.mod h1:Q22kbZ92mZFW1D2QiPEcNDr/pYLRl5BSY2VZ1WprvV0=
 github.com/quantumwake/alethic-ism-core-go v0.0.0-20250225171030-42e891211ce4 h1:ibQsGonqKb8Ruxi8I7eZaccMC9BBTuTJPWSU0df6q7o=
 github.com/quantumwake/alethic-ism-core-go v0.0.0-20250225171030-42e891211ce4/go.mod h1:Q22kbZ92mZFW1D2QiPEcNDr/pYLRl5BSY2VZ1WprvV0=
+github.com/quantumwake/alethic-ism-core-go v0.0.0-20250510163401-8d3aa08506a3 h1:knhMMG9WRaAkyboqkkb3OMF5Dads8coAWAsRmsNImdE=
+github.com/quantumwake/alethic-ism-core-go v0.0.0-20250510163401-8d3aa08506a3/go.mod h1:8rt/d+BrHD9deqeHpPIKWanaSBFybuNX1QXR0Q5lEwc=
+github.com/quantumwake/alethic-ism-core-go v0.0.0-20250510163848-fa994d0c9a77 h1:D/H0SZnEQ22Q7Us14EXrLFwbF9dEE6bRst1azPcz8nA=
+github.com/quantumwake/alethic-ism-core-go v0.0.0-20250510163848-fa994d0c9a77/go.mod h1:8rt/d+BrHD9deqeHpPIKWanaSBFybuNX1QXR0Q5lEwc=
+github.com/quantumwake/alethic-ism-core-go v0.0.0-20250510164826-52f14c15a3e8 h1:kwmee/a8aWgxzqmNFlfZTpFuL6TLR1ifPpoUcGTOTOQ=
+github.com/quantumwake/alethic-ism-core-go v0.0.0-20250510164826-52f14c15a3e8/go.mod h1:8rt/d+BrHD9deqeHpPIKWanaSBFybuNX1QXR0Q5lEwc=
+github.com/quantumwake/alethic-ism-core-go v0.0.0-20250510164915-8e7c9476f8a0 h1:hVEZJdNf5eb/rCjK/XDWxeZdsydvoLdYcI2GCtIktpE=
+github.com/quantumwake/alethic-ism-core-go v0.0.0-20250510164915-8e7c9476f8a0/go.mod h1:8rt/d+BrHD9deqeHpPIKWanaSBFybuNX1QXR0Q5lEwc=
 github.com/rogpeppe/go-internal v1.13.1 h1:KvO1DLK/DRN07sQ1LQKScxyZJuNnedQ5/wKSR38lUII=
 github.com/rogpeppe/go-internal v1.13.1/go.mod h1:uMEvuHeurkdAXX61udpOXGD/AzZDWNMNyH2VO9fmH0o=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

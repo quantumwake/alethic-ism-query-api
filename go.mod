@@ -1,11 +1,11 @@
 module alethic-ism-query-api
 
-go 1.22
+go 1.24
 
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/google/uuid v1.6.0
-	github.com/quantumwake/alethic-ism-core-go v0.0.0-20250225171030-42e891211ce4
+	github.com/quantumwake/alethic-ism-core-go v0.0.0-20250510164915-8e7c9476f8a0
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.4
