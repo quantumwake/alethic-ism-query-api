@@ -28,7 +28,7 @@ jobs:
         uses: quantumwake/alethic-ism-github-actions@main
         with:
           # Required inputs
-          image-name: 'quantumwake/alethic-ism-query-api'
+          image-name: 'krasaee/alethic-ism-query-api'
           registry-username: ${{ vars.DOCKERHUB_USERNAME }}
           registry-token: ${{ secrets.DOCKERHUB_TOKEN }}
           
