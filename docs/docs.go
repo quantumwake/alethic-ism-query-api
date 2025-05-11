@@ -19,7 +19,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/state/query/{id}": {
+        "/state/{id}/query": {
             "post": {
                 "description": "Query state data with filters",
                 "consumes": [
@@ -135,18 +135,11 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "filter_groups": {
+                    "description": "UserID       string        ` + "`" + `json:\"user_id\" example:\"77c17315-3013-5bb8-8c42-32c28618101f\"` + "`" + `\nStateID      string        ` + "`" + `json:\"state_id\" example:\"465884e9-7a08-40d0-acff-148663a7c9cf\"` + "`" + `",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dsl.FilterGroup"
                     }
-                },
-                "state_id": {
-                    "type": "string",
-                    "example": "465884e9-7a08-40d0-acff-148663a7c9cf"
-                },
-                "user_id": {
-                    "type": "string",
-                    "example": "77c17315-3013-5bb8-8c42-32c28618101f"
                 }
             }
         },
