@@ -3,7 +3,6 @@ name: Build and Deploy
 on:
   push:
     branches: [ "main" ]
-    tags: [ "v*" ]
   pull_request:
     branches: [ "main" ]
 
@@ -31,13 +30,13 @@ jobs:
           image-name: 'krasaee/alethic-ism-query-api'
           registry-username: ${{ vars.DOCKERHUB_USERNAME }}
           registry-token: ${{ secrets.DOCKERHUB_TOKEN }}
-          
-          # Kubernetes deployment settings
-          k8s-config: 'doctl kubernetes cluster kubeconfig save --expiry-seconds 600 qwake-k8s-cluster'
-          k8s-namespace: 'alethic'
-          k8s-deployment: 'alethic-ism-query-api-deployment'
-          deployment-file: 'k8s/deployment.yaml'
-          create-github-release: 'true'
-          
-          # Optional configuration settings that match your existing setup
           registry: 'docker.io'
+
+          # Kubernetes deployment settings
+#          k8s-config: 'doctl kubernetes cluster kubeconfig save --expiry-seconds 600 qwake-k8s-cluster'
+#          k8s-namespace: 'alethic'
+#          k8s-deployment: 'alethic-ism-query-api-deployment'
+#          deployment-file: 'k8s/deployment.yaml'
+
+#          create-github-release: 'true'
+          # Optional configuration settings that match your existing setup
