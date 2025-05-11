@@ -1,0 +1,43 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: write  # Needed for creating releases
+
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Build, Push, and Deploy Docker Image
+        uses: quantumwake/alethic-ism-github-actions@main
+        with:
+          # Required inputs
+          image-name: 'quantumwake/alethic-ism-query-api'
+          registry-username: ${{ vars.DOCKERHUB_USERNAME }}
+          registry-token: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+          # Kubernetes deployment settings
+          k8s-config: 'doctl kubernetes cluster kubeconfig save --expiry-seconds 600 qwake-k8s-cluster'
+          k8s-namespace: 'alethic'
+          k8s-deployment: 'alethic-ism-query-api-deployment'
+          deployment-file: 'k8s/deployment.yaml'
+          create-github-release: 'true'
+          
+          # Optional configuration settings that match your existing setup
+          registry: 'docker.io'
