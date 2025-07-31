@@ -82,7 +82,8 @@ func (da *Access) Query(stateID string, query dsl.StateQuery) ([]dsl.StateQueryR
 
 	// Execute the final query to get the results
 	var results []dsl.StateQueryResult
-	if err := da.DB.Raw(dataSQL, dataArgs...).Scan(&results).Error; err != nil {
+	err = da.DB.Raw(dataSQL, dataArgs...).Scan(&results).Error
+	if err != nil {
 		return nil, fmt.Errorf("failed to fetch data values: %v", err)
 	}
 

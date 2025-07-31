@@ -8,6 +8,7 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"net/http"
+	"os"
 )
 
 var (
@@ -35,7 +36,11 @@ func main() {
 	// ReDoc documentation route
 	r.GET("/redoc/*any", RedocHandler())
 
-	err := r.Run(":8081")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	err := r.Run(":" + port)
 	if err != nil {
 		return
 	}
@@ -58,12 +63,9 @@ func main() {
 func setupRoutesV1(r *gin.Engine) {
 	v1 := r.Group("/api/v1")
 	{
-		v1State := v1.Group("/state")
+		v1StateQuery := v1.Group("/state/query")
 		{
-			v1StateQuery := v1State.Group("/:id")
-			{
-				v1StateQuery.POST("/query", apiv1.HandleQueryState)
-			}
+			v1StateQuery.POST("/:id", apiv1.HandleQueryState)
 		}
 		v1Vault := v1.Group("/vault")
 		{

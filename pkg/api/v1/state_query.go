@@ -20,7 +20,7 @@ import (
 // @Success 200 {array} dsl.StateQueryResult
 // @Failure 400 {object} model.ErrorResponse
 // @Failure 500 {object} model.ErrorResponse
-// @Router /state/{id}/query [post]
+// @Router /state/query/{id} [post]
 func HandleQueryState(c *gin.Context) {
 	stateID := c.Param("id")
 	log.Println("querying state data for stateID: ", stateID)

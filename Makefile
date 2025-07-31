@@ -2,7 +2,7 @@
 .PHONY: build swag clean version all
 
 # Default image name - can be overridden with make IMAGE=your-image-name
-IMAGE ?= krasaee/alethic-ism-api:latest
+IMAGE ?= krasaee/alethic-ism-query-api:latest
 
 # Generate Swagger documentation
 swag:
