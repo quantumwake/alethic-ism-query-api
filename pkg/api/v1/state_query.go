@@ -4,9 +4,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/quantumwake/alethic-ism-core-go/pkg/repository/query"
 	"github.com/quantumwake/alethic-ism-core-go/pkg/repository/query/dsl"
-	"github.com/quantumwake/alethic-ism-core-go/pkg/repository/test"
 	"log"
 	"net/http"
+	"os"
+)
+
+var (
+	DSN = os.Getenv("DSN")
 )
 
 // HandleQueryState
@@ -34,7 +38,7 @@ func HandleQueryState(c *gin.Context) {
 	}
 
 	log.Println("querying state data for stateID: ", stateID, " with query: ", dql)
-	dataAccess := query.NewBackend(test.DSN)
+	dataAccess := query.NewBackend(DSN)
 
 	// Execute the query
 	results, err := dataAccess.Query(stateID, dql)

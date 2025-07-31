@@ -11,10 +11,6 @@ import (
 	"os"
 )
 
-var (
-// dataAccess *data.Access
-)
-
 func main() {
 	//dataAccess = data.InitializeNewDataAccessFromEnvDSN()
 
