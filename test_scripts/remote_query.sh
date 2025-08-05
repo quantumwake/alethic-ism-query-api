@@ -1,5 +1,5 @@
 curl -X 'POST' \
-  'https://api.ism.quantumwake.io/api/v1/state/8a516a57-f473-4027-b01c-ba5268571831/query' \
+  'https://api.ism.quantumwake.io/api/v1/state/query/8a516a57-f473-4027-b01c-ba5268571831' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
