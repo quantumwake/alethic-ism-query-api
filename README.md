@@ -1,64 +1,44 @@
-# Alethic Instruction-Based State Machine (State Query API)
+# Alethic ISM Query API
 
-A RESTful API service for querying state data from the Alethic Instruction-Based State Machine system. This API provides endpoints for querying state entries based on various criteria and managing vaults.
+Go/Gin service exposing state query, vault, and NLP embedding endpoints for the Alethic ISM platform. Each route group maps to a distinct domain for clean ingress-to-service routing.
 
-## Features
+## Endpoints
 
-- **State Querying**: Query state data using a flexible DSL (Domain Specific Language)
-- **Vault Management**: Create, retrieve, and delete vaults
-- **Swagger Documentation**: Comprehensive API documentation via Swagger UI and ReDoc
-- **PostgreSQL Integration**: Persistence layer using PostgreSQL with GORM
+| Method | Route | Description |
+|--------|-------|-------------|
+| POST | `/api/v1/state/query/:id` | Query state data with DSL filters |
+| POST | `/api/v1/vault` | Create a vault |
+| GET | `/api/v1/vault/:id` | Fetch a vault |
+| DELETE | `/api/v1/vault/:id` | Delete a vault |
+| POST | `/api/v1/nlp/embeddings` | Upsert an embedding document |
+| POST | `/api/v1/nlp/embeddings/batch` | Batch upsert documents |
+| GET | `/api/v1/nlp/embeddings/:id` | Get document by ID |
+| GET | `/api/v1/nlp/embeddings/parent/:id` | Get documents by parent ID |
+| DELETE | `/api/v1/nlp/embeddings/:id` | Delete document by ID |
+| DELETE | `/api/v1/nlp/embeddings/parent/:id` | Delete documents by parent ID |
+| POST | `/api/v1/nlp/embeddings/search` | Similarity search |
+| POST | `/api/v1/nlp/embeddings/migrate` | Run table migration |
 
-## API Endpoints
+Swagger UI at `/swagger/index.html`, ReDoc at `/redoc/index.html`.
 
-### State Query
+## Setup
 
-- `POST /api/v1/state/{id}/query`: Query state data with filters
+Requires Go 1.24+ and PostgreSQL with pgvector.
 
-### Vault Management
-
-- `POST /api/v1/vault`: Create a new vault
-- `GET /api/v1/vault/{id}`: Retrieve vault data by ID
-- `DELETE /api/v1/vault/{id}`: Delete a vault by ID
-
-## Documentation
-
-API documentation is available at:
-
-- Swagger UI: `/swagger/index.html`
-- ReDoc: `/redoc/index.html`
-
-## Getting Started
-
-### Prerequisites
-
-- Go 1.24 or higher
-- PostgreSQL database
-
-### Environment Variables
-
-- `DSN`: Database connection string (default: `host=localhost port=5432 user=postgres password=postgres1 dbname=postgres sslmode=disable`)
-
-### Installation
-
-1. Clone the repository
-2. Install dependencies with `go mod download`
-3. Build the API documentation with `./buildswag.sh`
-4. Build the application with `go build -o main .`
-5. Run the application with `./main`
-
-### Docker
-
-Build and run using Docker:
+| Env Var | Default | Description |
+|---------|---------|-------------|
+| `DSN` | — | PostgreSQL connection string |
+| `PORT` | `8080` | HTTP listen port |
 
 ```bash
-docker build -t alethic-ism-query-api --build-arg GIT_USERNAME=your_username --build-arg GIT_TOKEN=your_token .
-docker run -p 8081:8081 alethic-ism-query-api
+go mod download
+go build -o main .
+./main
 ```
 
 ## Deployment
 
-Kubernetes deployment configuration is available in the `k8s` directory.
+K8s manifests in `k8s/`. Ingress routes `/api/v1/state/query`, `/api/v1/vault`, and `/api/v1/nlp/embeddings` to this service.
 
 ## License
 

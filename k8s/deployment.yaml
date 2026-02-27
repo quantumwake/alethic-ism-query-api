@@ -17,19 +17,12 @@ metadata:
   name: ingress-alethic-ism-query-api
   namespace: alethic
   annotations:
-    #nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/cors-allow-origin: "https://ism.quantumwake.io, http://localhost:3000, http://localhost:3001"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     nginx.ingress.kubernetes.io/cors-max-age: "600"
     nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, DELETE"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    # WebSocket Annotations
-#    nginx.org/websocket-services: "alethic-ism-query-api-service"
-#    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-#    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-#    nginx.ingress.kubernetes.io/proxy-connect-timeout: "3600"
-#    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
 spec:
   tls:
     - hosts:
@@ -40,6 +33,20 @@ spec:
       http:
         paths:
           - path: /api/v1/state/query
+            pathType: Prefix
+            backend:
+              service:
+                name: alethic-ism-query-api-service
+                port:
+                  number: 80
+          - path: /api/v1/vault
+            pathType: Prefix
+            backend:
+              service:
+                name: alethic-ism-query-api-service
+                port:
+                  number: 80
+          - path: /api/v1/nlp/embeddings
             pathType: Prefix
             backend:
               service:

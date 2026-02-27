@@ -13,6 +13,16 @@ var (
 	DSN = os.Getenv("DSN")
 )
 
+// StateQueryHandler holds the query storage backend.
+type StateQueryHandler struct {
+	backend *query.BackendStorage
+}
+
+// NewStateQueryHandler creates a handler backed by the query backend.
+func NewStateQueryHandler(dsn string) *StateQueryHandler {
+	return &StateQueryHandler{backend: query.NewBackend(dsn)}
+}
+
 // HandleQueryState
 // @Summary Query state data
 // @Description Query state data with filters
@@ -24,8 +34,8 @@ var (
 // @Success 200 {array} dsl.StateQueryResult
 // @Failure 400 {object} model.ErrorResponse
 // @Failure 500 {object} model.ErrorResponse
-// @Router /state/query/{id} [post]
-func HandleQueryState(c *gin.Context) {
+// @Router /v1/state/query/{id} [post]
+func (h *StateQueryHandler) HandleQueryState(c *gin.Context) {
 	stateID := c.Param("id")
 	log.Println("querying state data for stateID: ", stateID)
 
@@ -38,10 +48,9 @@ func HandleQueryState(c *gin.Context) {
 	}
 
 	log.Println("querying state data for stateID: ", stateID, " with query: ", dql)
-	dataAccess := query.NewBackend(DSN)
 
 	// Execute the query
-	results, err := dataAccess.Query(stateID, dql)
+	results, err := h.backend.Query(stateID, dql)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal error"})
 		return

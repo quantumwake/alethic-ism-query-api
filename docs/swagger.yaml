@@ -1,5 +1,8 @@
-basePath: /api/v1
+basePath: /api
 definitions:
+  data.JSON:
+    additionalProperties: {}
+    type: object
   dsl.Filter:
     properties:
       column:
@@ -40,10 +43,14 @@ definitions:
     - LessThan
   dsl.StateQuery:
     properties:
-      filter_groups:
+      data_columns:
         description: |-
           UserID       string        `json:"user_id" example:"77c17315-3013-5bb8-8c42-32c28618101f"`
           StateID      string        `json:"state_id" example:"465884e9-7a08-40d0-acff-148663a7c9cf"`
+        items:
+          type: string
+        type: array
+      filter_groups:
         items:
           $ref: '#/definitions/dsl.FilterGroup'
         type: array
@@ -57,12 +64,112 @@ definitions:
       data_value:
         type: string
     type: object
+  embedding.ContentType:
+    enum:
+    - text
+    - markdown
+    - code
+    type: string
+    x-enum-varnames:
+    - ContentText
+    - ContentMarkdown
+    - ContentCode
+  embedding.Document:
+    properties:
+      content:
+        type: string
+      content_type:
+        $ref: '#/definitions/embedding.ContentType'
+      created_at:
+        type: string
+      dimensions:
+        type: integer
+      embedding:
+        items:
+          type: number
+        type: array
+      id:
+        type: string
+      metadata:
+        $ref: '#/definitions/data.JSON'
+      model:
+        type: string
+      parent_id:
+        type: string
+      project_id:
+        type: string
+      scope_id:
+        type: string
+      scope_type:
+        $ref: '#/definitions/embedding.ScopeType'
+      session_id:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  embedding.ScopeType:
+    enum:
+    - state
+    - route
+    - processor
+    - document
+    type: string
+    x-enum-varnames:
+    - ScopeState
+    - ScopeRoute
+    - ScopeProcessor
+    - ScopeDocument
+  embedding.SearchResult:
+    properties:
+      document:
+        $ref: '#/definitions/embedding.Document'
+      similarity:
+        type: number
+    type: object
   model.ErrorResponse:
     properties:
       code:
         type: integer
       message:
         type: string
+    type: object
+  v1.SearchFilterRequest:
+    properties:
+      project_id:
+        type: string
+      scope_id:
+        type: string
+      scope_type:
+        $ref: '#/definitions/embedding.ScopeType'
+      session_id:
+        type: string
+      user_id:
+        type: string
+    required:
+    - user_id
+    type: object
+  v1.SearchOptionsRequest:
+    properties:
+      limit:
+        type: integer
+      min_similarity:
+        type: number
+    type: object
+  v1.SearchRequest:
+    properties:
+      embedding:
+        items:
+          type: number
+        type: array
+      filter:
+        $ref: '#/definitions/v1.SearchFilterRequest'
+      options:
+        $ref: '#/definitions/v1.SearchOptionsRequest'
+    required:
+    - embedding
+    - filter
     type: object
 host: localhost:8081
 info:
@@ -74,7 +181,223 @@ info:
   title: Alethic ISM - Data Query API
   version: "1.0"
 paths:
-  /state/{id}/query:
+  /v1/nlp/embeddings:
+    post:
+      consumes:
+      - application/json
+      description: Insert or update a single embedding document
+      parameters:
+      - description: Embedding document
+        in: body
+        name: document
+        required: true
+        schema:
+          $ref: '#/definitions/embedding.Document'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/embedding.Document'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Upsert an embedding document
+      tags:
+      - Embedding
+  /v1/nlp/embeddings/{id}:
+    delete:
+      description: Delete a single embedding document by its ID
+      parameters:
+      - description: Document ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Delete embedding document by ID
+      tags:
+      - Embedding
+    get:
+      description: Retrieve a single embedding document by its ID
+      parameters:
+      - description: Document ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/embedding.Document'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Find embedding document by ID
+      tags:
+      - Embedding
+  /v1/nlp/embeddings/batch:
+    post:
+      consumes:
+      - application/json
+      description: Insert or update multiple embedding documents in a single transaction
+      parameters:
+      - description: List of embedding documents
+        in: body
+        name: documents
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/embedding.Document'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Batch upsert embedding documents
+      tags:
+      - Embedding
+  /v1/nlp/embeddings/migrate:
+    post:
+      description: Create the embedding_document table and indexes if they do not
+        exist
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Run embedding table migration
+      tags:
+      - Embedding
+  /v1/nlp/embeddings/parent/{id}:
+    delete:
+      description: Delete all embedding documents with the given parent ID
+      parameters:
+      - description: Parent ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Delete embedding documents by parent ID
+      tags:
+      - Embedding
+    get:
+      description: Retrieve all embedding documents with the given parent ID
+      parameters:
+      - description: Parent ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/embedding.Document'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Find embedding documents by parent ID
+      tags:
+      - Embedding
+  /v1/nlp/embeddings/search:
+    post:
+      consumes:
+      - application/json
+      description: Search for similar documents using cosine similarity
+      parameters:
+      - description: Search parameters
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/v1.SearchRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/embedding.SearchResult'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Search embedding documents by similarity
+      tags:
+      - Embedding
+  /v1/state/query/{id}:
     post:
       consumes:
       - application/json

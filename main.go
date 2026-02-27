@@ -55,20 +55,32 @@ func main() {
 // @license.url
 
 // @host localhost:8081
-// @BasePath /api/v1
+// @BasePath /api
 func setupRoutesV1(r *gin.Engine) {
-	v1 := r.Group("/api/v1")
+	stateQueryHandler := apiv1.NewStateQueryHandler(apiv1.DSN)
+	v1StateQuery := r.Group("/api/v1/state/query")
 	{
-		v1StateQuery := v1.Group("/state/query")
-		{
-			v1StateQuery.POST("/:id", apiv1.HandleQueryState)
-		}
-		v1Vault := v1.Group("/vault")
-		{
-			v1Vault.POST("", apiv1.HandleCreateVault)
-			v1Vault.GET("/:id", apiv1.HandleFetchVault)
-			v1Vault.DELETE("/:id", apiv1.HandleDeleteVault)
-		}
+		v1StateQuery.POST("/:id", stateQueryHandler.HandleQueryState)
+	}
+
+	v1Vault := r.Group("/api/v1/vault")
+	{
+		v1Vault.POST("", apiv1.HandleCreateVault)
+		v1Vault.GET("/:id", apiv1.HandleFetchVault)
+		v1Vault.DELETE("/:id", apiv1.HandleDeleteVault)
+	}
+
+	embHandler := apiv1.NewEmbeddingHandler(apiv1.DSN)
+	v1Embedding := r.Group("/api/v1/nlp/embeddings")
+	{
+		v1Embedding.POST("", embHandler.HandleUpsert)
+		v1Embedding.POST("/batch", embHandler.HandleUpsertBatch)
+		v1Embedding.GET("/:id", embHandler.HandleFindByID)
+		v1Embedding.GET("/parent/:id", embHandler.HandleFindByParentID)
+		v1Embedding.DELETE("/:id", embHandler.HandleDelete)
+		v1Embedding.DELETE("/parent/:id", embHandler.HandleDeleteByParentID)
+		v1Embedding.POST("/search", embHandler.HandleSearch)
+		v1Embedding.POST("/migrate", embHandler.HandleMigrate)
 	}
 }
 

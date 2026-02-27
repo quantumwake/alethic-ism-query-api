@@ -11,9 +11,336 @@
         "version": "1.0"
     },
     "host": "localhost:8081",
-    "basePath": "/api/v1",
+    "basePath": "/api",
     "paths": {
-        "/state/{id}/query": {
+        "/v1/nlp/embeddings": {
+            "post": {
+                "description": "Insert or update a single embedding document",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Embedding"
+                ],
+                "summary": "Upsert an embedding document",
+                "parameters": [
+                    {
+                        "description": "Embedding document",
+                        "name": "document",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/embedding.Document"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/embedding.Document"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/nlp/embeddings/batch": {
+            "post": {
+                "description": "Insert or update multiple embedding documents in a single transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Embedding"
+                ],
+                "summary": "Batch upsert embedding documents",
+                "parameters": [
+                    {
+                        "description": "List of embedding documents",
+                        "name": "documents",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/embedding.Document"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/nlp/embeddings/migrate": {
+            "post": {
+                "description": "Create the embedding_document table and indexes if they do not exist",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Embedding"
+                ],
+                "summary": "Run embedding table migration",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/nlp/embeddings/parent/{id}": {
+            "get": {
+                "description": "Retrieve all embedding documents with the given parent ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Embedding"
+                ],
+                "summary": "Find embedding documents by parent ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Parent ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/embedding.Document"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete all embedding documents with the given parent ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Embedding"
+                ],
+                "summary": "Delete embedding documents by parent ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Parent ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/nlp/embeddings/search": {
+            "post": {
+                "description": "Search for similar documents using cosine similarity",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Embedding"
+                ],
+                "summary": "Search embedding documents by similarity",
+                "parameters": [
+                    {
+                        "description": "Search parameters",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.SearchRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/embedding.SearchResult"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/nlp/embeddings/{id}": {
+            "get": {
+                "description": "Retrieve a single embedding document by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Embedding"
+                ],
+                "summary": "Find embedding document by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Document ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/embedding.Document"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a single embedding document by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Embedding"
+                ],
+                "summary": "Delete embedding document by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Document ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/state/query/{id}": {
             "post": {
                 "description": "Query state data with filters",
                 "consumes": [
@@ -71,6 +398,10 @@
         }
     },
     "definitions": {
+        "data.JSON": {
+            "type": "object",
+            "additionalProperties": {}
+        },
         "dsl.Filter": {
             "type": "object",
             "properties": {
@@ -128,8 +459,14 @@
         "dsl.StateQuery": {
             "type": "object",
             "properties": {
-                "filter_groups": {
+                "data_columns": {
                     "description": "UserID       string        `json:\"user_id\" example:\"77c17315-3013-5bb8-8c42-32c28618101f\"`\nStateID      string        `json:\"state_id\" example:\"465884e9-7a08-40d0-acff-148663a7c9cf\"`",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "filter_groups": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dsl.FilterGroup"
@@ -151,6 +488,98 @@
                 }
             }
         },
+        "embedding.ContentType": {
+            "type": "string",
+            "enum": [
+                "text",
+                "markdown",
+                "code"
+            ],
+            "x-enum-varnames": [
+                "ContentText",
+                "ContentMarkdown",
+                "ContentCode"
+            ]
+        },
+        "embedding.Document": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "content_type": {
+                    "$ref": "#/definitions/embedding.ContentType"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "dimensions": {
+                    "type": "integer"
+                },
+                "embedding": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/data.JSON"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "string"
+                },
+                "project_id": {
+                    "type": "string"
+                },
+                "scope_id": {
+                    "type": "string"
+                },
+                "scope_type": {
+                    "$ref": "#/definitions/embedding.ScopeType"
+                },
+                "session_id": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "embedding.ScopeType": {
+            "type": "string",
+            "enum": [
+                "state",
+                "route",
+                "processor",
+                "document"
+            ],
+            "x-enum-varnames": [
+                "ScopeState",
+                "ScopeRoute",
+                "ScopeProcessor",
+                "ScopeDocument"
+            ]
+        },
+        "embedding.SearchResult": {
+            "type": "object",
+            "properties": {
+                "document": {
+                    "$ref": "#/definitions/embedding.Document"
+                },
+                "similarity": {
+                    "type": "number"
+                }
+            }
+        },
         "model.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -159,6 +588,61 @@
                 },
                 "message": {
                     "type": "string"
+                }
+            }
+        },
+        "v1.SearchFilterRequest": {
+            "type": "object",
+            "required": [
+                "user_id"
+            ],
+            "properties": {
+                "project_id": {
+                    "type": "string"
+                },
+                "scope_id": {
+                    "type": "string"
+                },
+                "scope_type": {
+                    "$ref": "#/definitions/embedding.ScopeType"
+                },
+                "session_id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.SearchOptionsRequest": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer"
+                },
+                "min_similarity": {
+                    "type": "number"
+                }
+            }
+        },
+        "v1.SearchRequest": {
+            "type": "object",
+            "required": [
+                "embedding",
+                "filter"
+            ],
+            "properties": {
+                "embedding": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "filter": {
+                    "$ref": "#/definitions/v1.SearchFilterRequest"
+                },
+                "options": {
+                    "$ref": "#/definitions/v1.SearchOptionsRequest"
                 }
             }
         }
