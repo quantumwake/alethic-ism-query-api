@@ -566,13 +566,15 @@ const docTemplate = `{
                 "state",
                 "route",
                 "processor",
-                "document"
+                "document",
+                "conversation"
             ],
             "x-enum-varnames": [
                 "ScopeState",
                 "ScopeRoute",
                 "ScopeProcessor",
-                "ScopeDocument"
+                "ScopeDocument",
+                "ScopeConversation"
             ]
         },
         "embedding.SearchResult": {

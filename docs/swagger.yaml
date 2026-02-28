@@ -115,12 +115,14 @@ definitions:
     - route
     - processor
     - document
+    - conversation
     type: string
     x-enum-varnames:
     - ScopeState
     - ScopeRoute
     - ScopeProcessor
     - ScopeDocument
+    - ScopeConversation
   embedding.SearchResult:
     properties:
       document:

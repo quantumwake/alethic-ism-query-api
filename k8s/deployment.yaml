@@ -46,13 +46,14 @@ spec:
                 name: alethic-ism-query-api-service
                 port:
                   number: 80
-          - path: /api/v1/nlp/embeddings
-            pathType: Prefix
-            backend:
-              service:
-                name: alethic-ism-query-api-service
-                port:
-                  number: 80
+## ENABLE EMBEDDINGS ENDPOINTS
+#          - path: /api/v1/nlp/embeddings
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: alethic-ism-query-api-service
+#                port:
+#                  number: 80
   ingressClassName: nginx
 ---
 apiVersion: apps/v1
