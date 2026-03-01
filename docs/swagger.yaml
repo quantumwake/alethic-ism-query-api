@@ -69,11 +69,13 @@ definitions:
     - text
     - markdown
     - code
+    - json
     type: string
     x-enum-varnames:
     - ContentText
     - ContentMarkdown
     - ContentCode
+    - ContentJSON
   embedding.Document:
     properties:
       content:
@@ -116,6 +118,7 @@ definitions:
     - processor
     - document
     - conversation
+    - tool_result
     type: string
     x-enum-varnames:
     - ScopeState
@@ -123,6 +126,7 @@ definitions:
     - ScopeProcessor
     - ScopeDocument
     - ScopeConversation
+    - ScopeToolResult
   embedding.SearchResult:
     properties:
       document:

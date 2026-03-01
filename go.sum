@@ -120,6 +120,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/quantumwake/alethic-ism-core-go v0.1.19 h1:R3IHOeqtSnTww4xdSSFqx6VKZOoPlMptH1a1/heDiJQ=
 github.com/quantumwake/alethic-ism-core-go v0.1.19/go.mod h1:4GlCjLQETML0qthapD4Hdc9kKO6Xd2x5+O6IVmgeN5c=
+github.com/quantumwake/alethic-ism-core-go v0.1.20 h1:QPmDJnQDH34s6lBtO8Ktoq9uyk3d4u3UF5q8T4Zl9+8=
+github.com/quantumwake/alethic-ism-core-go v0.1.20/go.mod h1:4GlCjLQETML0qthapD4Hdc9kKO6Xd2x5+O6IVmgeN5c=
 github.com/quic-go/qpack v0.6.0 h1:g7W+BMYynC1LbYLSqRt8PBg5Tgwxn214ZZR34VIOjz8=
 github.com/quic-go/qpack v0.6.0/go.mod h1:lUpLKChi8njB4ty2bFLX2x4gzDqXwUpaO1DP9qMDZII=
 github.com/quic-go/quic-go v0.59.0 h1:OLJkp1Mlm/aS7dpKgTc6cnpynnD2Xg7C1pwL6vy/SAw=

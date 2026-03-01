@@ -499,12 +499,14 @@ const docTemplate = `{
             "enum": [
                 "text",
                 "markdown",
-                "code"
+                "code",
+                "json"
             ],
             "x-enum-varnames": [
                 "ContentText",
                 "ContentMarkdown",
-                "ContentCode"
+                "ContentCode",
+                "ContentJSON"
             ]
         },
         "embedding.Document": {
@@ -567,14 +569,16 @@ const docTemplate = `{
                 "route",
                 "processor",
                 "document",
-                "conversation"
+                "conversation",
+                "tool_result"
             ],
             "x-enum-varnames": [
                 "ScopeState",
                 "ScopeRoute",
                 "ScopeProcessor",
                 "ScopeDocument",
-                "ScopeConversation"
+                "ScopeConversation",
+                "ScopeToolResult"
             ]
         },
         "embedding.SearchResult": {
